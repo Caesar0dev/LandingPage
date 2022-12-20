@@ -1,0 +1,138 @@
+jQuery(document).ready(function () {
+	jQuery("ul.sub-menu").parent().addClass("dropdown");
+	jQuery("ul.sub-menu").addClass("dropdown-menu");
+	jQuery('ul.sub-menu > li > a').addClass('dropdown-item');
+	jQuery(".menu-item-has-children").click(function () {
+		jQuery(this).children().siblings(".sub-menu").slideToggle(function () {
+			jQuery(this).parent().toggleClass("menu-open");
+		});
+	});
+	// !!!  menu onclick add body class in menu full screen open js !!!
+	jQuery('#menu').click(function () {
+		$('.menu-trigger').toggleClass('open');
+	});
+	jQuery('.search_holder a').click(function () {
+		$('.form_search').toggleClass('open');
+	});
+	jQuery('.search_holder a').click(function () {
+		$('.navbar').toggleClass('open');
+	});
+	//  accordion card
+	$(".accordion .card a").click(function (e) {
+		var $this = $(this);
+		($(this).closest('.card').hasClass('active')) ? $cls = 1: $cls = 0;
+		//$('.card').removeClass('active');
+		$(this).closest('.card').removeClass('active');
+		$(this).closest('.card').parent().children('.card').removeClass('active');
+		if ($cls == 1) {
+			$(this).closest('.card').removeClass('active');
+		} else {
+			$(this).closest('.card').addClass('active');
+		}
+	});
+	$(function () {
+		$('.scroll_point').on('click', function (e) {
+			e.preventDefault();
+			$('html, body').animate({
+				scrollTop: $($(this).attr('href')).offset().top
+			}, 500, 'linear');
+		});
+	});
+	$(document).on('focusin', '.field_group .form-control', function () {
+		$(this).closest('.field_group').addClass('fill__input');
+	});
+	$(document).on('focusout', '.field_group .form-control', function () {
+		if ($(this).val() == "") {
+			$(this).closest('.field_group').removeClass('fill__input');
+		}
+	});
+	jQuery('#menu').click(function () {
+		$('.hero__banner__wrapper').toggleClass('hero_banner');
+	});
+
+	/*  jQuery('.faq__head.faq_page_head > h3').each(function(index, element) {
+	      var heading = $(element), word_array, last_word, first_part;
+
+	      word_array = heading.html().split(/\s+/); // split on spaces
+	      last_word = word_array.pop();             // pop the last word
+	      first_part = word_array.join(' ');        // rejoin the first words together
+
+	      heading.html([first_part, ' <span class="green_color">', last_word, '</span>'].join(''));
+	  }); */
+
+	//        $(window).scroll(function () {
+	//        if ($(window).scrollTop() >= 1000) {
+	//            $('.service_section_scroll').addClass('fixed-service');
+	//        } else {
+	//            $('.service_section_scroll').removeClass('fixed-service');
+	//        }
+	//    });
+
+	//    $(window).scroll(function() {    
+	//        var scroll = $(window).scrollTop();
+	//        var objectSelect = $('.service_section_scroll');
+	//        var objectPosition = objectSelect.offset().top;
+	//        if (scroll > objectPosition) {
+	//            $('.service_section_scroll').addClass("fixed-service");
+	//        } else {
+	//            $('.service_section_scroll').removeClass("fixed-service");
+	//        }
+	//    });
+
+	var nav = jQuery('.service_section_scroll');
+	var content = jQuery('.service_section_scroll').offset();
+	jQuery(window).scroll(function () {
+		var screenPosition = jQuery(document).scrollTop();
+		if (screenPosition < content.top) {
+			nav.removeClass("fixed-service");
+			nav.removeAttr("style");
+		}
+		if (screenPosition >= content.top) {
+			if (jQuery(window).innerWidth() <= 991) {
+				nav.addClass("fixed-service");
+				nav.css('top', $('#mainNav').outerHeight() + 'px');
+			} else {
+				nav.addClass("fixed-service");
+			}
+		}
+	});
+});
+
+$('.top_contact_wrapper .row').slick({
+  dots: false,
+  infinite: false,
+  speed: 300,
+  slidesToShow: 5,
+  slidesToScroll: 1,
+	settings: "unslick",
+  responsive: [
+	  {
+      breakpoint: 992,
+      settings: {
+		  slidesToShow: 3,
+      }
+    },
+    {
+      breakpoint: 768,
+      settings: {
+        slidesToShow: 1,
+      }
+    },
+    {
+      breakpoint: 576,
+      settings: {
+        slidesToShow: 1,
+      }
+    },
+    {
+      breakpoint: 480,
+      settings: {
+        slidesToShow: 1,
+      }
+    }
+  ]
+});
+$('.top_contact_wrapper .row').slick('slickGoTo', $('.slick-track .service-active').index());
+
+
+

@@ -1,0 +1,467 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!-- saved from url=(0034)https://www.berryfamilylaw.com.au/ -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><title>BugHerd Sidebar</title><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=0"><link href="./css" rel="stylesheet" type="text/css"><style></style></head><body onload="parent.window._bugHerd.loaded()" style="overflow: hidden;"><script src="./feedback-a26d70e3ec389c1cf183.js.download"></script><script type="text/template" id="searchbar-template">
+  <div class="search-container" style="z-index: 10000000"></div>
+</script>
+
+<!-- =================== -->
+<!-- ISSUE DETAILS PANEL -->
+<!-- =================== -->
+<script type="text/template" id="detailPanel-template">
+  <div id="task_details_container" class="antd-container"></div>
+</script>
+
+<!-- ======================= -->
+<!-- ISSUE LOGGING INTERFACE -->
+<!-- ======================= -->
+<script type="text/template" id="taskcreate-template">
+  <div class="bh-entry-wrap">
+    <% if (bugherd.application.get('mode') != 'anonymous') { %>
+      <div class="antd-container bh-entry">
+        <div id="create_task_container" class="antd-container" style="flex-shrink: 0;width: 100%;"></div>
+      </div>
+    <% } else { %>
+      <div class="bh-entry-inner-wrap">
+        <div class="antd-container bh-entry entry-compact entry-basic">
+          <div class="entry-head" style="padding: 5px 10px 5px">
+            <h3></h3>
+            <div class="titleBox">
+              <div class="projectName" id="newTaskHeader">
+                New Feedback
+              </div>
+              <a href="javascript:void(0);" class="entry-close">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  class="feather feather-x closeModalControl"
+                >
+                  <line x1="18" y1="6" x2="6" y2="18"></line>
+                  <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+              </a>
+            </div>
+          </div>
+          <div class="entry-content">
+            <div class="entry-description controls-row">
+              <label class="inline" for="bh-description"><%= bugherd.getConfigOption('feedback','feedback_entry_placeholder')%></label>
+              <textarea id="bh-description"></textarea>
+              <span class="count"><strong>0</strong> / 1000</span>
+            </div>
+            <div class="reporter-wrap controls-row">
+              <input id="bh-reporter" type="email" placeholder="<%= bugherd.getConfigOption('feedback','feedback_email_placeholder') %>" value="<%= bugherd.getConfigOption('reporter','email') || bhReporter || ''%>" maxlength="255"></input>
+              <div class="reporter-wrap-inner" style="font-size: 9pt; font-weight: 300">
+                <br />
+                <input id="bh-reporter-consent" type="checkbox" value="0" />
+                <p class="consentContent">
+                  <%= bugherd.getConfigOption('feedback','feedback_consent') %>
+                  <a href="https://bugherd.com/privacy" target="_blank">
+                    privacy policy
+                  </a>
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="entry-confirmation">
+            <div class="confirm-message confirm-success">
+                <span class="confirm-icon"></span>
+                <p><%= bugherd.getConfigOption('feedback','confirm_success_text') %></p>
+                <br />
+                <button class="button-close button"><%= bugherd.getConfigOption('feedback','confirm_close_text') %></button>
+              </div>
+              <div class="confirm-message confirm-loading">
+                <span class="confirm-icon"></span>
+                <p><%= bugherd.getConfigOption('feedback','confirm_loading_text') %></p>
+              </div>
+              <div class="confirm-message confirm-uploading">
+                <span class="confirm-icon"></span>
+                <p>
+                  Uploading video. This may take a moment.
+                </p>
+              </div>
+              <div class="confirm-message confirm-error">
+                <span class="confirm-icon"></span>
+                <p><%= bugherd.getConfigOption('feedback','confirm_error_text') %></p>
+                <br />
+                <button class="button-close button"> <%= bugherd.getConfigOption('feedback','confirm_retry_text') %></button>
+              </div>
+          </div>
+          <div class="entry-actions">
+            <button class="button button-confirm button-feedback"><%= bugherd.getConfigOption('feedback','feedback_submit_text') %></button>
+          </div>
+          <a href="https://www.bugherd.com/?utm_source=public&utm_medium=widget" target="_blank" tabindex="-1" class="credit"> <%= bugherd.getConfigOption('feedback', 'powered_by')%> <strong>BugHerd</strong></a>
+        </div>
+      </div>
+    <% } %>
+  </div>
+</script>
+<!-- ================ -->
+<!-- ISSUE LIST PANEL -->
+<!-- ================ -->
+<script type="text/template" id="listPanel-template">
+  <div class="menuHolder">
+    <div class="panelHead">
+      <h2>Task List</h2>
+      <ul class="panelHeadActions">
+        <li class="miniButton button-closePanel"><button tabindex="-1">close</button></li>
+        <li class="miniButton button-viewOptions">
+          <span>view options</span>
+          <small><b>show options</b></small>
+          <ul class="panelViewOptions">
+            <li><a class="sortLink" data-sort-attr="priority_id">severity</a></li>
+            <li><a class="sortLink" data-sort-attr="created_at">time created</a></li>
+            <li><a class="sortLink" data-sort-attr="updated_at">last modified</a></li>
+            <li><a class="sortLink" data-sort-attr="assignee_ids">assigned to</a></li>
+            <li class="bordered"><a class="orderLink opt-sortDirection">ascending order</a></li>
+            <li><a class="currentPageLink opt-currentPage">this page only</a></li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+    <div class="panelPopup searchPopup searchbarHolder"></div>
+    <div class='fixedHeader listHeading'></div>
+  </div>
+  <div class="listHolder flexHeight">
+  <div class="content" style="position: absolute; overflow: scroll; overflow-x: hidden; top: 0; bottom: 0; left: 0; width: 350px;"></div>
+  </div>
+</script>
+
+<script type="text/template" id="sidebar-template">
+  <div class="mainNav">
+    <a target="_blank" class="customSidebarLogo" href="https://www.bugherd.com/projects">
+      <img class="logoContainer" src="<%= window.parent._bugHerd.data.organization && window.parent._bugHerd.data.organization.product_logo.dark_background %>"></img>
+    </a>
+    <div id="sidebar_nav_container" class="antd-container"></div>
+    <ul class="navNewUL">
+      <li class="navItem largeScreenCTA">
+        <h4 class="navUserName navNew" data-tooltip="log a new issue"><span></span></h4>
+      </li>
+      <li id="new_task_record" class="antd-container"></li>
+      <li class="navItem smallScreenCTA">
+        <h4 class="navUserName navPin"><span>Select Element</span></h4>
+      </li>
+
+      <li class="navItem smallScreenCTA">
+          <h4 class="navUserName navFull option-site"><span>Full Page</span></h4>
+        </li>
+    </ul>
+    <div class="helpVideoContainer" data-tooltip="view bugherd support">
+      <a class="helpAnchor" href="https://support.bugherd.com/hc/en-us/articles/360001233156-How-do-I-give-feedback-or-log-a-bug-" target="_blank" rel="noreferrer noopener">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          class="feather feather-help-circle sidebarHelpIcon"
+        >
+          <circle cx="12" cy="12" r="10">
+          </circle>
+          <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3">
+          </path>
+          <line x1="12" y1="17" x2="12" y2="17">
+          </line>
+        </svg>
+      </a>
+    </div>
+    <ul class="navOpts">
+      <li class="navItem navToggle">
+        <h4 class="navUserName"><span></span></h4>
+      </li>
+    </ul>
+  </div>
+
+</script>
+
+<script type="text/template" id="anonymousbar-template">
+  <div class="feedbackTab" <%= (bugherd.getConfigOption('feedback','hide')) ? 'style="display:none;"' : '' %>> <%= bugherd.getConfigOption('feedback','tab_text') %></div>
+  <div class="bh-entry-wrap" style="display:none;">
+    <div class="bh-entry-inner-wrap">
+      <div class="bh-entry entry-compact">
+        <div class="entry-head publicFeedbackModal">
+          <h3><%= bugherd.getConfigOption('feedback','option_title_text') %></h3>
+          <a href="javascript:void(0);" class="entry-close">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="feather feather-x closeModalControl"
+            >
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+          </a>
+        </div>
+        <div class="entry-content">
+          <a href="#" class="entry-option option-pin"><%= bugherd.getConfigOption('feedback','option_pin_text') %></a>
+          <a href="#" class="entry-option option-site"><%= bugherd.getConfigOption('feedback','option_site_text') %></a>
+        </div>
+      </div>
+    </div>
+  </div>
+</script>
+
+<script type="text/template" id="bugbar-template">
+  <div class="bugbarActions">
+    <a class="navBugPin active" data-tooltip="tag an element">tag element</a>
+    <a class="navBugPage" data-tooltip="tag this page">tag page</a>
+    <a class="navBugCancel" data-tooltip="cancel issue tagging">done</a>
+  </div>
+</script>
+
+<script type="text/template" id="app-template">
+  <div class="helpVideoModal" style="display: none;" tabindex="0">
+    <div class="iframeContainer">
+      <div class="closeContainer">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="35"
+          height="35"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          class="feather feather-x closeHelpVideo"
+        >
+          <line x1="18" y1="6" x2="6" y2="18">
+          </line>
+          <line x1="6" y1="6" x2="18" y2="18">
+          </line>
+        </svg>
+      </div>
+      <iframe
+        class="helpVideoPlayer"
+        id="helpVideoPlayer"
+        frameborder="0"
+        allowfullscreen
+        data-src=<%= "https://player.vimeo.com/video/" + (window.parent._bugHerd.data.role == 'guest' ? '329271950' : '329272793') %>>
+      </iframe>
+    </div>
+  </div>
+  <div class="anonymousbarWrapper"></div>
+  <div class="bugbarWrapper"></div>
+  <div class="sidebar">
+    <div class="sidebarWrapper"></div>
+    <div class="listbarWrapper"></div>
+    <div class="detailbarWrapper"></div>
+  </div>
+  <button id="bugherdOpenButton" class="bugherd_open_button bugherd_open_button_loading">
+    <span class="navToggle">
+      <% organization = window.parent._bugHerd.data.organization %>
+      <div class="toggleOuter <%= organization && organization.product_logo.is_custom_toggle ? 'notDefault' : '' %>">
+        <svg class="sidebar-logo" id="sidebar-toggle-logo" width="8" height="15" xmlns="http://www.w3.org/2000/svg">
+          <g id="Page-1" fill="none" fill-rule="evenodd">
+            <path
+              d="M7.707 13.171c.39.418.39 1.097 0 1.515a.954.954 0 0 1-1.414 0l-6-6.428a1.126 1.126 0 0 1 0-1.516l6-6.428a.954.954 0 0 1 1.414 0c.39.418.39 1.097 0 1.515L2.414 7.5l5.293 5.671z"
+              id="arrow"
+              fill="#FAFAFA"
+              fill-rule="nonzero"
+            />
+          </g>
+        </svg>
+
+        <img class="customLogo" id="customLogoImg" src="<%= organization ? organization.product_logo.toggle : '' %>" alt="toggle_logo" />
+      </div>
+    </span>
+  </button>
+  <div class="taskcreateWrapper"></div>
+  <div id="tour" style="display:none;">
+    <div id="tour0">
+      <img src="<%= bugherd.application.get('assets').tour0 %>"/>
+      <div class="content-padding">
+        <p class='header'>This is the BugHerd sidebar</p>
+        <p>It's like a visual layer on top of your website allowing users to <b>"pin" feedback</b> directly onto the website you've created.</p>
+        <p>The sidebar only appears for people who've been invited to your 
+          BugHerd project, and don't worry, you can control whether or not they can see each others comments.</p>
+      </div>
+    </div>
+    <div id="tour1">
+      <img class="tour1-image" src="<%= bugherd.application.get('assets').tour1 %>"/>
+      <div class='content-padding'>
+        <p class='header left'>Create your first task</p>
+        <p class='bottom-padding'>Click on the "+" button to start giving feedback.</p>
+      </div>
+    </div>
+    <div id="tour2">
+      <img src="<%= bugherd.application.get('assets').tour2 %>"/>
+      <div class='content-padding'>
+        <p class='header left'>Feedback captured!</p>
+        <p>BugHerd has captured all the key details including a screenshot & browser details,
+        and <b>pinned it directly to the exact element on the website.</b></p>
+        <p>Now let's manage the feedback we just created.</p>
+      </div>
+    </div>
+  </div>
+</script>
+<script type="text/javascript" src="./sidebar-a011cc236156ed936d26c8a69edf934cbc864bade95844fbf0df4efc77b305fe.js.download"></script><link href="./sidebar-80c35021b1ab09e07ffcb73413ac24b2beff70a62135fede36a44c4c08a6e992.css" type="text/css" rel="stylesheet"><div class="bhAdminFader" style="top: 0px; left: 0px; width: 100%; height: 100%; position: fixed; background: rgba(110, 110, 110, 0.5); z-index: 199; display: none;"></div><div priorities="[object Object]" statuses="[object Object]" currentuserid="-1" pusherchannelid="projectMOsyXvhYSoj9IPzXwDmlrw" sortascending="true" sidebar_pagefiltered="false" sortattribute="priority_id" tags="" projectid="184964" apikey="8xsulz1cmxxc3jzjf8xg4w" assets="[object Object]" access_to="[object Object]" currentuser="[object Object]" projecturls="http://berryfm.saltandfuessel.com.au/,http://www.berryfm.saltandfuessel.com.au/,https://berryfm.saltandfuessel.com.au/,https://www.berryfm.saltandfuessel.com.au/" mode="anonymous" experiments="sidebar_2021,legacy_onboarding,slack_integration,move_task,edit_comment,due_date,toggleable_sidebar,hide_stale_tags,sidebar_tweaks" toggle_vertical_position="100" shortcut_to_show_widget="" always_show_widget="false" name="Berry Family Law" projectsites="[object Object],[object Object],[object Object],[object Object]" pusherapikey="edf8b9a8b50d1c28bb17" bugherdurl="https://www.bugherd.com" url="https://www.bugherd.com" screenshotserverurl="https://screenshots.bugherd.com/" class="sidebarApplication sidebarHidden sidebarClosed" style="z-index: 2147483645; display: block;">
+  <div class="helpVideoModal" style="display: none;" tabindex="0">
+    <div class="iframeContainer">
+      <div class="closeContainer">
+        <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x closeHelpVideo">
+          <line x1="18" y1="6" x2="6" y2="18">
+          </line>
+          <line x1="6" y1="6" x2="18" y2="18">
+          </line>
+        </svg>
+      </div>
+      <iframe class="helpVideoPlayer" id="helpVideoPlayer" frameborder="0" allowfullscreen="" data-src="https://player.vimeo.com/video/329272793" src="./saved_resource(3).html">
+      </iframe>
+    </div>
+  </div>
+  <div class="anonymousbarWrapper"><div class="anonymousReport position-bottom-right" style="">
+  <div class="feedbackTab"> Send feedback</div>
+  <div class="bh-entry-wrap" style="display:none;">
+    <div class="bh-entry-inner-wrap">
+      <div class="bh-entry entry-compact">
+        <div class="entry-head publicFeedbackModal">
+          <h3>Choose an option</h3>
+          <a href="javascript:void(0);" class="entry-close">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x closeModalControl">
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+          </a>
+        </div>
+        <div class="entry-content">
+          <a href="https://www.berryfamilylaw.com.au/#" class="entry-option option-pin">I have feedback regarding a specific part of this page.</a>
+          <a href="https://www.berryfamilylaw.com.au/#" class="entry-option option-site">I have feedback regarding this page or site as a whole.</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div></div>
+  <div class="bugbarWrapper" style="display: none;"></div>
+  <div class="sidebar">
+    <div class="sidebarWrapper" tabindex="-1" style="display: none;"></div>
+    <div class="listbarWrapper" tabindex="-1" style="display: none;"></div>
+    <div class="detailbarWrapper" tabindex="-1" style="display: none;"></div>
+  </div>
+  <button id="bugherdOpenButton" class="bugherd_open_button" style="display: none;">
+    <span class="navToggle">
+      
+      <div class="toggleOuter notDefault">
+        <svg class="sidebar-logo" id="sidebar-toggle-logo" width="8" height="15" xmlns="http://www.w3.org/2000/svg">
+          <g id="Page-1" fill="none" fill-rule="evenodd">
+            <path d="M7.707 13.171c.39.418.39 1.097 0 1.515a.954.954 0 0 1-1.414 0l-6-6.428a1.126 1.126 0 0 1 0-1.516l6-6.428a.954.954 0 0 1 1.414 0c.39.418.39 1.097 0 1.515L2.414 7.5l5.293 5.671z" id="arrow" fill="#FAFAFA" fill-rule="nonzero"></path>
+          </g>
+        </svg>
+
+        <img class="customLogo" id="customLogoImg" src="./00SnF.png" alt="toggle_logo">
+      </div>
+    </span>
+  </button>
+  <div class="taskcreateWrapper"><div class="taskCreate" style="display: none;">
+  <div class="bh-entry-wrap">
+    
+      <div class="bh-entry-inner-wrap">
+        <div class="antd-container bh-entry entry-compact entry-basic">
+          <div class="entry-head" style="padding: 5px 10px 5px">
+            <h3></h3>
+            <div class="titleBox">
+              <div class="projectName" id="newTaskHeader">
+                New Feedback
+              </div>
+              <a href="javascript:void(0);" class="entry-close">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x closeModalControl">
+                  <line x1="18" y1="6" x2="6" y2="18"></line>
+                  <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+              </a>
+            </div>
+          </div>
+          <div class="entry-content">
+            <div class="entry-description controls-row">
+              <label class="inline" for="bh-description">write a comment or describe a problem</label>
+              <textarea id="bh-description"></textarea>
+              <span class="count"><strong>0</strong> / 1000</span>
+            </div>
+            <div class="reporter-wrap controls-row">
+              <input id="bh-reporter" type="email" placeholder="your email address" value="" maxlength="255">
+              <div class="reporter-wrap-inner" style="font-size: 9pt; font-weight: 300">
+                <br>
+                <input id="bh-reporter-consent" type="checkbox" value="0">
+                <p class="consentContent">
+                  I consent to the collection of information I provide and screenshots created as part of the feedback process, to be used in accordance with BugHerd's privacy policy
+                  <a href="https://bugherd.com/privacy" target="_blank">
+                    privacy policy
+                  </a>
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="entry-confirmation">
+            <div class="confirm-message confirm-success">
+                <span class="confirm-icon"></span>
+                <p>Your feedback was sent.</p>
+                <br>
+                <button class="button-close button">close</button>
+              </div>
+              <div class="confirm-message confirm-loading">
+                <span class="confirm-icon"><div class="spinner" aria-role="progressbar" style="position: relative; z-index: 200; left: 22px; top: 22px;"><div style="position: absolute; top: -1px; opacity: 0.25; animation: 1s linear 0s infinite normal none running opacity-30-25-0-11;"><div style="position: absolute; width: 7px; height: 3px; background: rgb(255, 255, 255); box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 1px; transform-origin: left center; transform: rotate(0deg) translate(4px, 0px); border-radius: 1px;"></div></div><div style="position: absolute; top: -1px; opacity: 0.25; animation: 1s linear 0s infinite normal none running opacity-30-25-1-11;"><div style="position: absolute; width: 7px; height: 3px; background: rgb(255, 255, 255); box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 1px; transform-origin: left center; transform: rotate(32deg) translate(4px, 0px); border-radius: 1px;"></div></div><div style="position: absolute; top: -1px; opacity: 0.25; animation: 1s linear 0s infinite normal none running opacity-30-25-2-11;"><div style="position: absolute; width: 7px; height: 3px; background: rgb(255, 255, 255); box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 1px; transform-origin: left center; transform: rotate(65deg) translate(4px, 0px); border-radius: 1px;"></div></div><div style="position: absolute; top: -1px; opacity: 0.25; animation: 1s linear 0s infinite normal none running opacity-30-25-3-11;"><div style="position: absolute; width: 7px; height: 3px; background: rgb(255, 255, 255); box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 1px; transform-origin: left center; transform: rotate(98deg) translate(4px, 0px); border-radius: 1px;"></div></div><div style="position: absolute; top: -1px; opacity: 0.25; animation: 1s linear 0s infinite normal none running opacity-30-25-4-11;"><div style="position: absolute; width: 7px; height: 3px; background: rgb(255, 255, 255); box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 1px; transform-origin: left center; transform: rotate(130deg) translate(4px, 0px); border-radius: 1px;"></div></div><div style="position: absolute; top: -1px; opacity: 0.25; animation: 1s linear 0s infinite normal none running opacity-30-25-5-11;"><div style="position: absolute; width: 7px; height: 3px; background: rgb(255, 255, 255); box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 1px; transform-origin: left center; transform: rotate(163deg) translate(4px, 0px); border-radius: 1px;"></div></div><div style="position: absolute; top: -1px; opacity: 0.25; animation: 1s linear 0s infinite normal none running opacity-30-25-6-11;"><div style="position: absolute; width: 7px; height: 3px; background: rgb(255, 255, 255); box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 1px; transform-origin: left center; transform: rotate(196deg) translate(4px, 0px); border-radius: 1px;"></div></div><div style="position: absolute; top: -1px; opacity: 0.25; animation: 1s linear 0s infinite normal none running opacity-30-25-7-11;"><div style="position: absolute; width: 7px; height: 3px; background: rgb(255, 255, 255); box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 1px; transform-origin: left center; transform: rotate(229deg) translate(4px, 0px); border-radius: 1px;"></div></div><div style="position: absolute; top: -1px; opacity: 0.25; animation: 1s linear 0s infinite normal none running opacity-30-25-8-11;"><div style="position: absolute; width: 7px; height: 3px; background: rgb(255, 255, 255); box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 1px; transform-origin: left center; transform: rotate(261deg) translate(4px, 0px); border-radius: 1px;"></div></div><div style="position: absolute; top: -1px; opacity: 0.25; animation: 1s linear 0s infinite normal none running opacity-30-25-9-11;"><div style="position: absolute; width: 7px; height: 3px; background: rgb(255, 255, 255); box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 1px; transform-origin: left center; transform: rotate(294deg) translate(4px, 0px); border-radius: 1px;"></div></div><div style="position: absolute; top: -1px; opacity: 0.25; animation: 1s linear 0s infinite normal none running opacity-30-25-10-11;"><div style="position: absolute; width: 7px; height: 3px; background: rgb(255, 255, 255); box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 1px; transform-origin: left center; transform: rotate(327deg) translate(4px, 0px); border-radius: 1px;"></div></div></div></span>
+                <p>Sending feedback.</p>
+              </div>
+              <div class="confirm-message confirm-uploading">
+                <span class="confirm-icon"><div class="spinner" aria-role="progressbar" style="position: relative; z-index: 200; left: 22px; top: 22px;"><div style="position: absolute; top: -1px; opacity: 0.25; animation: 1s linear 0s infinite normal none running opacity-30-25-0-11;"><div style="position: absolute; width: 7px; height: 3px; background: rgb(255, 255, 255); box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 1px; transform-origin: left center; transform: rotate(0deg) translate(4px, 0px); border-radius: 1px;"></div></div><div style="position: absolute; top: -1px; opacity: 0.25; animation: 1s linear 0s infinite normal none running opacity-30-25-1-11;"><div style="position: absolute; width: 7px; height: 3px; background: rgb(255, 255, 255); box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 1px; transform-origin: left center; transform: rotate(32deg) translate(4px, 0px); border-radius: 1px;"></div></div><div style="position: absolute; top: -1px; opacity: 0.25; animation: 1s linear 0s infinite normal none running opacity-30-25-2-11;"><div style="position: absolute; width: 7px; height: 3px; background: rgb(255, 255, 255); box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 1px; transform-origin: left center; transform: rotate(65deg) translate(4px, 0px); border-radius: 1px;"></div></div><div style="position: absolute; top: -1px; opacity: 0.25; animation: 1s linear 0s infinite normal none running opacity-30-25-3-11;"><div style="position: absolute; width: 7px; height: 3px; background: rgb(255, 255, 255); box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 1px; transform-origin: left center; transform: rotate(98deg) translate(4px, 0px); border-radius: 1px;"></div></div><div style="position: absolute; top: -1px; opacity: 0.25; animation: 1s linear 0s infinite normal none running opacity-30-25-4-11;"><div style="position: absolute; width: 7px; height: 3px; background: rgb(255, 255, 255); box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 1px; transform-origin: left center; transform: rotate(130deg) translate(4px, 0px); border-radius: 1px;"></div></div><div style="position: absolute; top: -1px; opacity: 0.25; animation: 1s linear 0s infinite normal none running opacity-30-25-5-11;"><div style="position: absolute; width: 7px; height: 3px; background: rgb(255, 255, 255); box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 1px; transform-origin: left center; transform: rotate(163deg) translate(4px, 0px); border-radius: 1px;"></div></div><div style="position: absolute; top: -1px; opacity: 0.25; animation: 1s linear 0s infinite normal none running opacity-30-25-6-11;"><div style="position: absolute; width: 7px; height: 3px; background: rgb(255, 255, 255); box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 1px; transform-origin: left center; transform: rotate(196deg) translate(4px, 0px); border-radius: 1px;"></div></div><div style="position: absolute; top: -1px; opacity: 0.25; animation: 1s linear 0s infinite normal none running opacity-30-25-7-11;"><div style="position: absolute; width: 7px; height: 3px; background: rgb(255, 255, 255); box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 1px; transform-origin: left center; transform: rotate(229deg) translate(4px, 0px); border-radius: 1px;"></div></div><div style="position: absolute; top: -1px; opacity: 0.25; animation: 1s linear 0s infinite normal none running opacity-30-25-8-11;"><div style="position: absolute; width: 7px; height: 3px; background: rgb(255, 255, 255); box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 1px; transform-origin: left center; transform: rotate(261deg) translate(4px, 0px); border-radius: 1px;"></div></div><div style="position: absolute; top: -1px; opacity: 0.25; animation: 1s linear 0s infinite normal none running opacity-30-25-9-11;"><div style="position: absolute; width: 7px; height: 3px; background: rgb(255, 255, 255); box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 1px; transform-origin: left center; transform: rotate(294deg) translate(4px, 0px); border-radius: 1px;"></div></div><div style="position: absolute; top: -1px; opacity: 0.25; animation: 1s linear 0s infinite normal none running opacity-30-25-10-11;"><div style="position: absolute; width: 7px; height: 3px; background: rgb(255, 255, 255); box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 1px; transform-origin: left center; transform: rotate(327deg) translate(4px, 0px); border-radius: 1px;"></div></div></div></span>
+                <p>
+                  Uploading video. This may take a moment.
+                </p>
+              </div>
+              <div class="confirm-message confirm-error">
+                <span class="confirm-icon"></span>
+                <p>Sending feedback was unsuccessful.</p>
+                <br>
+                <button class="button-close button"> Try again</button>
+              </div>
+          </div>
+          <div class="entry-actions">
+            <button class="button button-confirm button-feedback">send feedback</button>
+          </div>
+          <a href="https://www.bugherd.com/?utm_source=public&amp;utm_medium=widget" target="_blank" tabindex="-1" class="credit"> powered by <strong>BugHerd</strong></a>
+        </div>
+      </div>
+    
+  </div>
+</div></div>
+  <div id="tour" style="display:none;">
+    <div id="tour0">
+      <img src="./bugherd-sidebar-6b1529e99957b8ea83927e35c69831a7be1d05d9e2d6acfe595c5f306ed7163b.png">
+      <div class="content-padding">
+        <p class="header">This is the BugHerd sidebar</p>
+        <p>It's like a visual layer on top of your website allowing users to <b>"pin" feedback</b> directly onto the website you've created.</p>
+        <p>The sidebar only appears for people who've been invited to your 
+          BugHerd project, and don't worry, you can control whether or not they can see each others comments.</p>
+      </div>
+    </div>
+    <div id="tour1">
+      <img class="tour1-image" src="./sidebar-intro-asset-0511ddeaf567ef4887d3b9d7d289b4bbdcffadf3ca5df7a327b85c5c6281534a.png">
+      <div class="content-padding">
+        <p class="header left">Create your first task</p>
+        <p class="bottom-padding">Click on the "+" button to start giving feedback.</p>
+      </div>
+    </div>
+    <div id="tour2">
+      <img src="./task-created-small-e8c7dda1d03b3ced7985658350a81a94662cee583946ae80b848a60f8846e089.png">
+      <div class="content-padding">
+        <p class="header left">Feedback captured!</p>
+        <p>BugHerd has captured all the key details including a screenshot &amp; browser details,
+        and <b>pinned it directly to the exact element on the website.</b></p>
+        <p>Now let's manage the feedback we just created.</p>
+      </div>
+    </div>
+  </div>
+</div></body></html>
